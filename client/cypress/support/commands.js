@@ -77,7 +77,8 @@ Cypress.Commands.add("interceptGetOnboarding", () => {
           },
           {
             name: "receiveUpdates",
-            label: "I would like to receive updates about the product via email",
+            label:
+              "I would like to receive updates about the product via email",
             type: "yes-no",
             required: true,
           },

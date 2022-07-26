@@ -37,7 +37,7 @@ router.post("/register", async (req, res, next) => {
       return res.status(401).json({ error: "Validation error" });
     } else next(error);
   }
-});
+});  
 
 router.post("/login", async (req, res, next) => {
   try {
