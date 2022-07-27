@@ -11,9 +11,8 @@ const OnboardingForm = ({ user }) => {
      const [isLoggedIn, setIsLoggedIn] = useState(false);
      const [userData, setUserData] = useState({firstName: "", lastName: "", country: "", bio: "", receiveUpdates: false, receiveNotifications: false});
      const [onbordingSteps, setOnboardingSteps] = useState([]);
-     const [approveButtonToAction, setApproveButtonToAction] = useState(false);
+     const [nonModifiedSteps, setNonModifiedSteps] = useState([]);
      const [currentStep, setCurrentStep] = useState(0);
-     const [nonModifiedSteps, setNonModifiedSteps] = useState({});
      const [error, setError] = useState("Please fill out all required fields before proceeding");
      
      useEffect(() => {
@@ -59,48 +58,11 @@ const OnboardingForm = ({ user }) => {
                     return item
                }); 
      
-               swapArrayItems(modifiedData, "country", "lastName");
                setOnboardingSteps(modifiedData);
           } catch (error) {
                console.log(error)
           }
      }
-
-     const findIndex = (arr, value) => {
-          return arr.findIndex(i => i.name === value);
-     }
-
-     const swapArrayItems = (arr, itemToSwap, placeAfterThisItem ) => {
-          const swapIndex = findIndex(arr, itemToSwap);
-          const afterItem = findIndex(arr, placeAfterThisItem);
-          const saveItemToSwap = arr[swapIndex];
-          arr.splice(swapIndex, 1);
-          arr.splice(afterItem + 1, 0, saveItemToSwap);
-     }
-
-     const testRequiredInputs = () => {
-          let result = false;
-          const arrToTest = onbordingSteps?.slice(currentStep, currentStep + 4)
-               .filter(item => item.required)
-               .map(item => userData[item.name] !== "" ? true : false);
-                    
-          if(arrToTest.length > 0){
-               result = arrToTest.every(e => e === true)
-          }
-                    
-          if (!result){
-               setApproveButtonToAction(true)
-          } else {
-               setApproveButtonToAction(false)
-          }
-     }
-     
-     useEffect(() => {
-          // eslint-disable-next-line
-          if (userData, currentStep, onbordingSteps){
-               testRequiredInputs()
-          }
-     });
                
      const updateOnboarding = async (sendData) => {
           try {
@@ -147,7 +109,8 @@ const OnboardingForm = ({ user }) => {
                <form className="onboardingForm" onSubmit={ handleSubmit }>
                     { 
                          userData && onbordingSteps 
-                              ? onbordingSteps?.slice(currentStep, currentStep + 4).map((data, index) => {
+                              ? onbordingSteps?.slice(currentStep, currentStep + 3).map((data, index) => {
+                                   console.log(data);
                                    return (
                                         <FormControl required={data.required ? true : false} fullWidth margin="normal" key={ data.name }>
                                              { data.type === "yes-no" ?
@@ -164,7 +127,7 @@ const OnboardingForm = ({ user }) => {
                                                        label={data.label + `${data.required ? " *" : ""}`}
                                                   />
                                                   : <>
-                                                       <InputLabel htmlFor={ data.name } focused={ false }>{ data.label }</InputLabel>
+                                                       <InputLabel htmlFor={ data.name } focused={ false } className="label">{ data.label }</InputLabel>
                                                        <Input
                                                             sx={{ width: "100%", fontSize: "14px" }}
                                                             autoFocus={ index === 0 ? true : false }
@@ -186,26 +149,27 @@ const OnboardingForm = ({ user }) => {
                     }
                     <Typography style={{ color: "#FF3A3A", fontSize: "12px" }}>{ error }</Typography>
                     <div className="btnContainer">
-                         { currentStep >= 4
+                         { currentStep >= 3
                               ? <Button 
-                                   onClick={ () => setCurrentStep(currentStep - 4) } 
+                                   onClick={ () => setCurrentStep(currentStep - 3) } 
                                    variant="contained"
                                    color="primary"
+                                   type="button"
                                    >Back</Button>
                               : false
                          }
                          { currentStep < (onbordingSteps.length - 1) - currentStep
                               ? <Button 
-                                   onClick={ () => setCurrentStep(currentStep + 4) } 
-                                   disabled={ approveButtonToAction ? true : false }
+                                   onClick={ () => setCurrentStep(currentStep + 3) } 
                                    variant="contained" 
-                                   color="primary" 
+                                   color="primary"
+                                   type="button"
+                                   name="Next"
                                    style={{ gridColumn: "4 / -1"}}>Next</Button>
                               : false
                          }
                          {  currentStep >= (onbordingSteps.length - 1) - currentStep
                               ? <Button 
-                                   disabled={ approveButtonToAction ? true : false }
                                    type="submit"
                                    variant="contained" 
                                    color="primary" 

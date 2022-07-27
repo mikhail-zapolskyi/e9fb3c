@@ -2,12 +2,12 @@
      position: relative;
      width: 100vw;
      height: 100vh;
+     font-family: 'Open Sans';
 }
 
 .onboardingForm {
      width: 70vw; 
      max-width: 1024;
-     height: max-content; 
      max-height: 700px;
      position: absolute; 
      left: 50%;
@@ -26,4 +26,8 @@
 
 .btn-end {
      justify-self: end;
+}
+
+.label { 
+     margin-bottom: 20px;
 }

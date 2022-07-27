@@ -50,7 +50,7 @@ describe("GET /api/onboarding", () => {
           {
             name: "receiveNotifications",
             label:
-              "I would like to receive email notifications for new messages when I'm logged out",
+              "I would like to receive email notifications for new messages when I'm logged out", // the word notification was miss spelled as notiication, which did give me pass the test
             type: "yes-no",
             required: true,
           },
