@@ -106,7 +106,9 @@ const Routes = (props) => {
           path="/"
           render={(props) =>
             user?.id ? (
-              <Home user={user} logout={logout} />
+               user?.completedOnboarding ? 
+                    <Home user={user} logout={logout} />
+               : <OnboardingForm user={user} />
             ) : (
               <Signup user={user} register={register} />
             )
