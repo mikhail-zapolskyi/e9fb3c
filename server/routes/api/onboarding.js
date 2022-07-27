@@ -107,7 +107,7 @@ router.route("/").delete(async (req, res) => {
      res.status(201).json({ m: "good" })
 })
 
+router.route("/").post(updateOnboarding);
 router.route("/").get(getOnboarding).all(methodNotAllowed);
-router.route("/update").post(updateOnboarding);
 
 module.exports = router;

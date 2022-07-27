@@ -65,7 +65,7 @@ const User = db.define("user", {
     notEmpty: false,
     validate: {
      isBioValue(){
-          if(this.bio && !this.bio.match(/^[a-zA-Z0-9\s]*$/)){
+          if(this.bio && !this.bio.match(/^[a-zA-Z0-9.,\s]*$/)){
                throw new Error("Bio field must be letters only")
           }
      }

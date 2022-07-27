@@ -15,7 +15,7 @@ function errorHandler(err, req, res, next) {
 
      if(err.name = 'SequelizeValidationError'){
           message = err.errors.map(e => e.message);
-          req.statusCode = 400;
+          req.statusCode = 401;
      }
 
      res.status(statusCode);

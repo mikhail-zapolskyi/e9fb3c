@@ -104,7 +104,7 @@ const OnboardingForm = ({ user }) => {
                
      const updateOnboarding = async (sendData) => {
           try {
-               const { data } = await axios.post("/api/onboarding/update", sendData);
+               const { data } = await axios.post("/api/onboarding", sendData);
                if(data.completedOnboarding === true){
                     setUserData({firstName: "", lastName: "", country: "", bio: "", receiveUpdates: false, receiveNotifications: false})
                     history.go(0)
