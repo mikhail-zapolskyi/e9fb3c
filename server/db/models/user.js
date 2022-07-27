@@ -37,26 +37,59 @@ const User = db.define("user", {
   },
   firstName: {
     type: Sequelize.STRING,
+    validate: {
+     isAlpha: { msg: "First Name field must be letters only" },
+     notEmpty: { msg: "Please provide your first name" }
+    }
   },
   lastName: {
     type: Sequelize.STRING,
+    notEmpty: false,
+    validate: {
+     isLastNameValue(){
+          if(this.lastName && !this.lastName.match(/^[a-zA-Z\s]*$/)){
+               throw new Error("Last Name field must be letters only")
+          }
+     }
+    }
   },
   country: {
     type: Sequelize.STRING,
+    validate: {
+     isAlpha: { msg: "Country field must be letters only" },
+     notEmpty: { msg: "Please provide your counrty of residence" }
+    }
   },
   bio: {
     type: Sequelize.STRING,
+    notEmpty: false,
+    validate: {
+     isBioValue(){
+          if(this.bio && !this.bio.match(/^[a-zA-Z0-9\s]*$/)){
+               throw new Error("Bio field must be letters only")
+          }
+     }
+    }
   },
   receiveNotifications: {
     type: Sequelize.BOOLEAN,
+    validate: {
+     isBoolean: { msg: "Please make a notifications selection" }
+    }
   },
   receiveUpdates: {
     type: Sequelize.BOOLEAN,
+    validate: {
+     isBoolean: { msg: "Please make a updates selection" }
+    }
   },
   completedOnboarding: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+    validate: {
+     isBoolean: { msg: "Please make a selection" }
+    }
   },
 });
 
