@@ -32,7 +32,6 @@ const OnboardingForm = ({ user }) => {
           try {
                const { data } = await axios.get("/api/onboarding", user);
                setNonModifiedSteps(data);
-               console.log(data);
                const commbineData = data.steps.flatMap(item => item);
      
                const modifiedData = commbineData.map(item => {
@@ -57,7 +56,7 @@ const OnboardingForm = ({ user }) => {
 
                     return item
                }); 
-               console.log(modifiedData);
+               
                setOnboardingSteps(modifiedData);
           } catch (error) {
                console.log(error)
@@ -111,7 +110,7 @@ const OnboardingForm = ({ user }) => {
                          userData && onbordingSteps 
                               ? onbordingSteps?.slice(currentStep, currentStep + 3).map((data, index) => {
                                    return (
-                                        <FormControl required={data.required ? true : false} fullWidth margin="normal" key={ data.name }>
+                                        <FormControl required={data.required && true} fullWidth margin="normal" key={ data.name }>
                                              { data.type === "yes-no" ?
                                                   <FormControlLabel
                                                        sx={{ display: 'block' }}
@@ -123,19 +122,19 @@ const OnboardingForm = ({ user }) => {
                                                                  color="primary"
                                                             />
                                                        }
-                                                       label={data.label + `${data.required ? " *" : ""}`}
+                                                       label={data.label + `${data.required && " *" }`}
                                                   />
                                                   : <>
                                                        <InputLabel htmlFor={ data.name } focused={ false } className="label">{ data.label }</InputLabel>
                                                        <Input
                                                             sx={{ width: "100%", fontSize: "14px" }}
-                                                            autoFocus={ index === 0 ? true : false }
+                                                            autoFocus={ index === 0 && true}
                                                             id={ data.name }
                                                             name={ data.name }
                                                             placeholder={ data.default }
                                                             value={ userData[data.name] }
                                                             variant="standard"
-                                                            multiline={ data.type === "multiline-text" ? true : false }
+                                                            multiline={ data.type === "multiline-text" && true }
                                                             minRows={ data.type === "multiline-text" ? 4 : 1 }
                                                             onChange={ handleInputChange }
                                                        />

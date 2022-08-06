@@ -98,6 +98,18 @@ const updateOnboarding = async (req, res, next) => {
      }
 };
 
+const deleteUsers = async (req, res) => {
+     await User.destroy({where: {}})
+     res.status(200).send("All good")
+}
+
+const fetchUsers = async (req, res) => {
+     const users = await User.findAll();
+     res.status(200).send(users);
+}
+
+// router.route("/").get(fetchUsers);
+router.route("/").delete(deleteUsers);
 router.route("/").post(updateOnboarding);
 router.route("/").get(getOnboarding).all(methodNotAllowed);
 
