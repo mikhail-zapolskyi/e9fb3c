@@ -74,10 +74,10 @@ const updateOnboarding = async (req, res, next) => {
                
                if(obj.hasOwnProperty("name") && obj.hasOwnProperty("value")){
                     if (filterWrongKeys.length !== 0){
-                         return res.sendStatus(400).json({ error: "bla"});
+                         return res.sendStatus(400).json({ error: "wrong key"});
                     }
                } else {
-                    return res.sendStatus(400).json({ error: "bla bla"});
+                    return res.sendStatus(400).json({ error: "missing key"});
                }
           }))
 
@@ -97,15 +97,6 @@ const updateOnboarding = async (req, res, next) => {
           next(error);
      }
 };
-
-router.route("/").delete(async (req, res) => {
-     User.destroy({
-          where: {},
-          truncate: true
-     })
-
-     res.status(201).json({ m: "good" })
-})
 
 router.route("/").post(updateOnboarding);
 router.route("/").get(getOnboarding).all(methodNotAllowed);

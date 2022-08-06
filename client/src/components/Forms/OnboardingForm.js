@@ -32,7 +32,7 @@ const OnboardingForm = ({ user }) => {
           try {
                const { data } = await axios.get("/api/onboarding", user);
                setNonModifiedSteps(data);
-
+               console.log(data);
                const commbineData = data.steps.flatMap(item => item);
      
                const modifiedData = commbineData.map(item => {
@@ -57,7 +57,7 @@ const OnboardingForm = ({ user }) => {
 
                     return item
                }); 
-     
+               console.log(modifiedData);
                setOnboardingSteps(modifiedData);
           } catch (error) {
                console.log(error)
@@ -110,7 +110,6 @@ const OnboardingForm = ({ user }) => {
                     { 
                          userData && onbordingSteps 
                               ? onbordingSteps?.slice(currentStep, currentStep + 3).map((data, index) => {
-                                   console.log(data);
                                    return (
                                         <FormControl required={data.required ? true : false} fullWidth margin="normal" key={ data.name }>
                                              { data.type === "yes-no" ?
