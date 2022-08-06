@@ -156,32 +156,32 @@ const OnboardingForm = ({ user }) => {
                     }
                     <Typography className={ classes.typographyCustom }>{ error }</Typography>
                     <div className="btnContainer">
-                         { currentStep >= 3
-                              ? <Button 
+                         { currentStep >= 3 
+                              &&
+                               <Button 
                                    onClick={ () => setCurrentStep(currentStep - 3) } 
                                    variant="contained"
                                    color="primary"
                                    type="button"
                                    >Back</Button>
-                              : false
                          }
-                         { currentStep < (onbordingSteps.length - 1) - currentStep
-                              ? <Button 
+                         { currentStep < (onbordingSteps.length - 1) - currentStep 
+                              &&
+                              <Button 
                                    onClick={ () => setCurrentStep(currentStep + 3) } 
                                    variant="contained" 
                                    color="primary"
                                    type="button"
                                    name="Next"
-                                   style={{ gridColumn: "4 / -1"}}>Next</Button>
-                              : false
+                                   style={{ gridColumn: "4 / -1"}}>Next</Button>               
                          }
-                         {  currentStep >= (onbordingSteps.length - 1) - currentStep
-                              ? <Button 
+                         {  currentStep >= (onbordingSteps.length - 1) - currentStep 
+                              && 
+                              <Button 
                                    type="submit"
                                    variant="contained" 
                                    color="primary" 
                                    style={{ gridColumn: "4 / -1"}}>Finish</Button>
-                              : false
                          }
                     </div>
                </form> 
