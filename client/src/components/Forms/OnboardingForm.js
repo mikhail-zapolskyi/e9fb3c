@@ -18,8 +18,8 @@ const OnboardingForm = ({ user }) => {
      const history = useHistory();
      
      const [isLoggedIn, setIsLoggedIn] = useState(false);
-     const [userData, setUserData] = useState({firstName: "", lastName: "", country: "", bio: "", receiveUpdates: false, receiveNotifications: false});
      const [onbordingSteps, setOnboardingSteps] = useState([]);
+     const [userData, setUserData] = useState({});
      const [nonModifiedSteps, setNonModifiedSteps] = useState([]);
      const [currentStep, setCurrentStep] = useState(0);
      const [error, setError] = useState("Please fill out all required fields before proceeding");
@@ -40,12 +40,13 @@ const OnboardingForm = ({ user }) => {
      const getOnboardingSteps = async (user) => {
           try {
                const { data } = await axios.get("/api/onboarding", user);
+               console.log(data);
                setNonModifiedSteps(data);
                const commbineData = data.steps.flatMap(item => item);
      
                const modifiedData = commbineData.map(item => {
                     const { name } = item;
-                    
+
                     if(name === "firstName"){
                          setUserData({ ...userData, [name]: "" })
                          return { ...item, default: "John" }
@@ -66,12 +67,17 @@ const OnboardingForm = ({ user }) => {
                     return item
                }); 
                
+               const userDataObj = {}
+               modifiedData.map(i => userDataObj[i.name] = "");
+               
+               setUserData(userDataObj)
                setOnboardingSteps(modifiedData);
+
           } catch (error) {
                console.log(error)
           }
-     }
-               
+     };
+
      const updateOnboarding = async (sendData) => {
           try {
                const { data } = await axios.post("/api/onboarding", sendData);
@@ -125,7 +131,7 @@ const OnboardingForm = ({ user }) => {
                                                        sx={{ display: 'block' }}
                                                        control={
                                                             <Switch
-                                                                 checked={ userData[data.name] }
+                                                                 checked={ userData[data.name] || false}
                                                                  onChange={ handleSwitchChange }
                                                                  name={data.name}
                                                                  color="primary"
@@ -141,7 +147,7 @@ const OnboardingForm = ({ user }) => {
                                                             id={ data.name }
                                                             name={ data.name }
                                                             placeholder={ data.default }
-                                                            value={ userData[data.name] }
+                                                            value={ userData[data.name] || ""}
                                                             variant="standard"
                                                             multiline={ data.type === "multiline-text" && true }
                                                             minRows={ data.type === "multiline-text" ? 4 : 1 }
