@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
+import { makeStyles } from "@material-ui/core/styles";
 
 import { Button, FormControl, Input, InputLabel, Switch, Typography, FormControlLabel} from '@material-ui/core';
 import "./onboardingForm.css";
 
+const useStyles = makeStyles({
+     typographyCustom: {
+          color: "#FF3A3A",
+          fontSize: "12px"
+     }
+});
+
 const OnboardingForm = ({ user }) => {
+     const classes = useStyles();
      const history = useHistory();
      
      const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -145,7 +154,7 @@ const OnboardingForm = ({ user }) => {
                          })
                               : <p>Loading ... </p>
                     }
-                    <Typography style={{ color: "#FF3A3A", fontSize: "12px" }}>{ error }</Typography>
+                    <Typography className={ classes.typographyCustom }>{ error }</Typography>
                     <div className="btnContainer">
                          { currentStep >= 3
                               ? <Button 
