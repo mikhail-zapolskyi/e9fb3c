@@ -67,7 +67,7 @@ const updateOnboarding = async (req, res, next) => {
           if (!req.user) {
                return res.sendStatus(401);
           }
-          
+
           steps.forEach(step => step.forEach(obj => {
                const stepKeys = Object.keys(obj);
                const filterWrongKeys = stepKeys.filter(key => key !== "name" && key !== "value");
@@ -80,7 +80,7 @@ const updateOnboarding = async (req, res, next) => {
                     return res.sendStatus(400).json({ error: "missing key"});
                }
           }))
-
+          // Used "let" because I do changes to user before save
           let user = await User.findOne({ where: { id: id }, attributes: {exclude: ['password', 'salt', 'token']}});
 
           if(user.completedOnboarding === false){
@@ -89,6 +89,7 @@ const updateOnboarding = async (req, res, next) => {
                }));
                user["completedOnboarding"] = true;
                await user.save();
+
                res.status(200).json(user);
           } else {
                return res.status(400).json({ error: "Onboarding form can be completed only once" })
