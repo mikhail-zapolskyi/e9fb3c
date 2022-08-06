@@ -92,7 +92,7 @@ const updateOnboarding = async (req, res, next) => {
 
                res.status(200).json(user);
           } else {
-               return res.status(400).json({ error: "Onboarding form can be completed only once" })
+               return res.status(409).json({ error: "Onboarding form can be completed only once" })
           }
      } catch (error) {
           next(error);
