@@ -22,6 +22,7 @@ const OnboardingForm = ({ user }) => {
      const [userData, setUserData] = useState({});
      const [nonModifiedSteps, setNonModifiedSteps] = useState([]);
      const [currentStep, setCurrentStep] = useState(0);
+     const [nextBtnActive, setNextBtnActive] = useState(true);
      const [error, setError] = useState("Please fill out all required fields before proceeding");
      
      useEffect(() => {
@@ -37,10 +38,13 @@ const OnboardingForm = ({ user }) => {
              // eslint-disable-next-line
      },[user, history, isLoggedIn]);
 
+     useEffect(() => {
+          isNextBtnActive(onbordingSteps, userData);
+     });
+
      const getOnboardingSteps = async (user) => {
           try {
                const { data } = await axios.get("/api/onboarding", user);
-               console.log(data);
                setNonModifiedSteps(data);
                const commbineData = data.steps.flatMap(item => item);
      
@@ -70,7 +74,7 @@ const OnboardingForm = ({ user }) => {
                const userDataObj = {}
                modifiedData.map(i => userDataObj[i.name] = "");
                
-               setUserData(userDataObj)
+               setUserData(userDataObj);
                setOnboardingSteps(modifiedData);
 
           } catch (error) {
@@ -91,7 +95,7 @@ const OnboardingForm = ({ user }) => {
                     setError("")
                }, 3000);
           }
-     }
+     };
 
      const handleInputChange = (e) => {
           e.preventDefault();
@@ -103,6 +107,16 @@ const OnboardingForm = ({ user }) => {
           const { name } = e.target;
           setUserData({ ...userData, [name]: !userData[name] });
      }
+
+     const isNextBtnActive = (steps, data) => {
+          const requiredValues = steps.slice(currentStep, currentStep + 3).filter(value => {
+               return value.hasOwnProperty("required");
+          });
+          
+          const testIfValueEmpty = requiredValues.every(({name}) => data[name] !== "");
+
+          testIfValueEmpty ? setNextBtnActive(false) : setNextBtnActive(true)
+     };
 
      const handleSubmit = (e) => {
           e.preventDefault();
@@ -174,6 +188,7 @@ const OnboardingForm = ({ user }) => {
                          { currentStep < (onbordingSteps.length - 1) - currentStep 
                               &&
                               <Button 
+                                   disabled = { nextBtnActive }
                                    onClick={ () => setCurrentStep(currentStep + 3) } 
                                    variant="contained" 
                                    color="primary"
