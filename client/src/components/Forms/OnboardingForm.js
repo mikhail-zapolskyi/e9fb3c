@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Button, FormControl, Input, InputLabel, Switch, Typography, FormControlLabel} from '@material-ui/core';
+import { Button, FormControl, Input, InputLabel, Switch, Typography, FormControlLabel, Container} from '@material-ui/core';
 import "./onboardingForm.css";
 
 const useStyles = makeStyles({
@@ -27,7 +27,6 @@ const OnboardingForm = ({ user }) => {
      
      useEffect(() => {
           if (user?.isFetching) return;
-
           if (user && user.id) {
                setIsLoggedIn(true);
                getOnboardingSteps(user);
@@ -72,16 +71,19 @@ const OnboardingForm = ({ user }) => {
                }); 
                
                const userDataObj = {}
-               modifiedData.map(i => userDataObj[i.name] = "");
-               
+               modifiedData.map(i => i.name === "receiveNotifications" || i.name === "receiveUpdates"
+                         ? userDataObj[i.name] = false     
+                         : userDataObj[i.name] = ""
+               );
+          
                setUserData(userDataObj);
                setOnboardingSteps(modifiedData);
 
           } catch (error) {
-               console.log(error)
+               setError(error.response.data.message);
           }
      };
-
+     
      const updateOnboarding = async (sendData) => {
           try {
                const { data } = await axios.post("/api/onboarding", sendData);
@@ -114,8 +116,8 @@ const OnboardingForm = ({ user }) => {
           });
           
           const testIfValueEmpty = requiredValues.every(({name}) => data[name] !== "");
-
-          testIfValueEmpty ? setNextBtnActive(false) : setNextBtnActive(true)
+          
+          setNextBtnActive(!testIfValueEmpty)
      };
 
      const handleSubmit = (e) => {
@@ -128,12 +130,12 @@ const OnboardingForm = ({ user }) => {
                step.forEach(i => tempArr.push({ name: i.name, value: userData[i.name] }))
                finalSteps.steps.push(tempArr);
           })
-          
+
           updateOnboarding(finalSteps);
      }
      
      return (
-          <div className="formContainer">
+          <Container maxWidth="sm">
                <form className="onboardingForm" onSubmit={ handleSubmit }>
                     { 
                          userData && onbordingSteps 
@@ -206,7 +208,7 @@ const OnboardingForm = ({ user }) => {
                          }
                     </div>
                </form> 
-          </div>
+          </Container>
      )
 }
 

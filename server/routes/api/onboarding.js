@@ -59,25 +59,24 @@ const getOnboarding = async (req, res, next) => {
 };
 
 const updateOnboarding = async (req, res, next) => {
-     const { id } = req.user;
-     const { steps } = req.body;
-
-     
      try {
           if (!req.user) {
                return res.sendStatus(401);
           }
 
+          const { id } = req.user;
+          const { steps } = req.body;
+          
           steps.forEach(step => step.forEach(obj => {
                const stepKeys = Object.keys(obj);
                const filterWrongKeys = stepKeys.filter(key => key !== "name" && key !== "value");
                
                if(obj.hasOwnProperty("name") && obj.hasOwnProperty("value")){
                     if (filterWrongKeys.length !== 0){
-                         return res.sendStatus(400).json({ error: "wrong key"});
+                         return res.sendStatus(406).json({ error: "Wrong property key"});
                     }
                } else {
-                    return res.sendStatus(400).json({ error: "missing key"});
+                    return res.sendStatus(406).json({ error: "Missing property key"});
                }
           }))
           // Used "let" because I do changes to user before save
@@ -99,18 +98,6 @@ const updateOnboarding = async (req, res, next) => {
      }
 };
 
-const deleteUsers = async (req, res) => {
-     await User.destroy({where: {}})
-     res.status(200).send("All good")
-}
-
-const fetchUsers = async (req, res) => {
-     const users = await User.findAll();
-     res.status(200).send(users);
-}
-
-// router.route("/").get(fetchUsers);
-router.route("/").delete(deleteUsers);
 router.route("/").post(updateOnboarding);
 router.route("/").get(getOnboarding).all(methodNotAllowed);
 
