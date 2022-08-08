@@ -2,7 +2,7 @@ In our case, I believe that having hardcoded data will be beneficial if we later
 What makes the app more dynamic. In the event that we need to add, change, or delete fields.
 
 Is it efficient to save the steps data in the DB?
-It is easier to maintain, has fewer chances of error, and can read once on startup and then cache/save in the application.
+Is it efficient and it is easier to maintain, has fewer chances of error, and can read once on startup and then cache/save in the application.
 
 The disadvantage is that if we lose our API, our form will crash.
 
