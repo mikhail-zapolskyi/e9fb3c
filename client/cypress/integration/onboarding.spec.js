@@ -57,7 +57,7 @@ describe("Onboarding", () => {
     cy.get("[name=lastName]").type("last");
     cy.get("[name=bio]").type("bio");
     cy.contains("button", "Next").click();
-
+    
     // Second page
     cy.get("[name=country]");
     cy.get("[name=receiveNotifications]");

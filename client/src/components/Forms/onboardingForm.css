@@ -1,0 +1,27 @@
+.onboardingForm {
+     width: 70vw; 
+     max-width: 1024;
+     max-height: 700px;
+     position: absolute; 
+     left: 50%;
+     top: 3.57%;
+     transform: translateX(-50%);
+     background-color: #F7F9FD;
+     padding: 40px 52px;
+     display: grid;
+     gap: 20px;
+     font-family: 'Open Sans';
+}
+
+.btnContainer {
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
+}
+
+.btn-end {
+     justify-self: end;
+}
+
+.label { 
+     margin-bottom: 20px;
+}
